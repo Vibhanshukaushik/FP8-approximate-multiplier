@@ -1,0 +1,8 @@
+module LUT_B(a,b,cin,sum,carry);
+input a,b,cin;
+output sum,carry;
+
+assign sum = cin ? (a ^ (~b)): (a^b);
+assign carry = a & b;
+
+endmodule
