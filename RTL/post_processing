@@ -1,0 +1,26 @@
+module post_process(a,b,m_sum,e_sum,zero,total_sum);
+
+parameter e=4,m=3;
+input [7:0] a,b;
+input zero;
+input [m+1:0] m_sum;
+input [e:0] e_sum;
+output [7:0] total_sum;
+
+////////////////LUT A/////////////////
+assign total_sum[7] = a[7]^b[7];
+
+//////////////////mantissa/////////////////
+
+assign total_sum[m-1:0] = (zero==1) ? 0 :
+                            m_sum[m+1:m] == 2'b10 ? {1'b1,m_sum[m-1:1]} : m_sum;
+                            
+/////////////////exponent/////////////////
+
+assign total_sum[6:m] = (zero == 0) ? 0 :
+                            m_sum[m+1:m] == 2'b00 ? e_sum :
+                            m_sum[m+1:m] == 2'b11 ? e_sum+2 : e_sum+1;
+                            
+                            
+
+endmodule
