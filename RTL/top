@@ -1,0 +1,27 @@
+module top(a,b,total_sum);
+parameter e=4,m=3;
+
+input [7:0] a,b;
+output [7:0] total_sum;
+
+wire [m+1:0] m_sum_wire;
+wire [e:0] e_sum_wire;
+
+wire [m:0] lm_wire;
+wire [e:0] bias_wire;
+wire zero_wire;
+
+assign lm_wire = (m==4)? 'd3 :((m>4) ? 'd4 : m); 
+assign bias_wire = {m_sum_wire[m+1],m_sum_wire[m]}== 2'b11 ? 'd5: {m_sum_wire[m+1],m_sum_wire[m]}== 2'b00 ? 'd7 : 'd6; 
+
+assign zero = (a[6:0] | b[6:0] ) == 7'b0 ? 1'b1:1'b0;
+
+mantissa_adder ma(.a(a[m-1:0]),.b(b[m-1:0]),.cin(1'b0),.sum_total(m_sum_wire),.lm(lm_wire));
+
+exponent_adder ea(.a(a[6:m]),.b(b[6:m]),.cin(1'b0),.bias(bias_wire),.sum_total(e_sum_wire));
+
+post_process post_pro(.a(a),.b(b),.m_sum(m_sum_wire),.e_sum(e_sum_wire),.zero(zero_wire),.total_sum(total_sum));
+
+
+
+endmodule
