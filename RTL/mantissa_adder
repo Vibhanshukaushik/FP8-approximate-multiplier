@@ -1,0 +1,39 @@
+module mantissa_adder(a,b,cin,sum_total,lm);
+parameter m=3;
+
+input [m-1:0] a,b;
+input cin;
+input [m:0] lm;
+output [m+1:0] sum_total;
+wire [m:0] sum;
+
+wire [m-1:0] lut_sum,lut_carry,sum_r;
+wire [m-1:0] co;
+
+wire [m:0] lut_sum1,lut_carry1;
+wire [m:0] co1;
+wire [m:0] lm;
+
+//assign lm = (m==4)? 'd3 :((m>4) ? 'd4 : m); 
+
+genvar i;
+generate
+for(i=0;i<m;i=i+1) begin
+    LUT_B lb1(.a(a[i]),.b(b[i]),.cin(cin),.sum(lut_sum[i]),.carry(lut_carry[i]));
+end
+endgenerate
+
+CARRY4 carry_inst1 (.CI(cin),.CYINIT(1'b0),.DI({1'b0, lut_carry}),.S({1'b0, lut_sum}),.CO(co),.O(sum_r));
+
+genvar j;
+generate
+for(j=0;j<m;j=j+1) begin
+    LUT_B lb2(.a(sum_r[j]),.b(lm[j]),.cin(cin),.sum(lut_sum1[j]),.carry(lut_carry1[j]));
+end
+endgenerate
+LUT_B lb2_1(.a(co[m-1]),.b(lm[m]),.cin(cin),.sum(lut_sum1[m]),.carry(lut_carry1[m]));
+
+CARRY4 carry_inst2 (.CI(cin),.CYINIT(1'b0),.DI(lut_carry1),.S(lut_sum1),.CO(co1),.O(sum));
+assign sum_total= {co1[m],sum};
+
+endmodule
