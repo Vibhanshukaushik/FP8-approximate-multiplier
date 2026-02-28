@@ -1,0 +1,35 @@
+module exponent_adder(a,b,cin,bias,sum_total);
+parameter e=4,m=3;
+input [e-1:0] a,b;
+input cin;
+input [e:0] bias;
+output [e:0] sum_total;
+//output cout;
+wire [e:0] sum;
+
+wire [e-1:0] lut_sum,lut_carry,sum_r;
+wire [e-1:0] co;
+
+wire [e:0] lut_sum1,lut_carry1;
+wire [e:0] co1;
+//assign bias=7;
+genvar i;
+generate
+    for(i=0;i<e;i=i+1) begin
+        LUT_B lb(.a(a[i]),.b(b[i]),.cin(1'b0),.sum(lut_sum[i]),.carry(lut_carry[i]));
+    end
+endgenerate
+
+CARRY4 carry_inst1 (.CI(cin),.CYINIT(1'b0),.DI(lut_carry),.S(lut_sum),.CO(co),.O(sum_r));
+
+genvar j;
+generate
+    for(j=0;j<e;j=j+1) begin
+        LUT_B lb(.a(sum_r[j]),.b(bias[j]),.cin(cin),.sum(lut_sum1[j]),.carry(lut_carry1[j])); //cin=1'b1;
+    end
+endgenerate
+LUT_B lb(.a(co[e-1]),.b(bias[e]),.cin(~cin),.sum(lut_sum1[e]),.carry(lut_carry1[e]));
+CARRY4 carry_inst2 (.CI(~cin),.CYINIT(1'b0),.DI(lut_carry1[e-1:0]),.S(lut_sum1[e-1:0]),.CO(co1[e-1:0]),.O(sum[e-1:0]));
+CARRY4 carry_inst3 (.CI(~cin),.CYINIT(co1[e-1]),.DI({3'b0,lut_carry1[e]}),.S({3'b0,lut_sum1[e]}),.CO(co1[e]),.O(sum[e]));
+assign sum_total = sum;
+endmodule 
