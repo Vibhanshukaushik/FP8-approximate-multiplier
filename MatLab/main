@@ -1,0 +1,5 @@
+clear; clc;
+e=4; m=3;
+ITERATION=16384;
+error_LMUL (ITERATION,e,m);
+error_add_mul(ITERATION,e,m);
