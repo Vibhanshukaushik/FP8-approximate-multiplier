@@ -1,0 +1,12 @@
+%x=15;y=9;e = 4;m = 3;
+
+%add_mul(x,y,e,m);
+
+function result = add_mul(x,y,e,m)
+offset = ((2^(e-1))-1) * 2^m ;
+
+%fprintf("offset is -%g\n",offset);
+
+result = x + y - offset;
+%fprintf("ADD-MUL result = %g\n",result);
+end
