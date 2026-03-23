@@ -1,0 +1,16 @@
+function result = Mul(mx, my, ex, ey, e,m)
+    mx_eff=mx/(2^m);
+    my_eff=my/(2^m);
+   
+    bias = 2^(e-1) - 1;
+   
+    Ex_eff = ex - bias;
+    Ey_eff = ey - bias;
+
+    result = (1 + mx_eff + my_eff + (mx_eff * my_eff)) * 2^(Ex_eff + Ey_eff);
+   % fprintf("MUL result = %g\n",result);
+end
+
+%e=4; m=3; mx=7; my= 1; ex=1; ey=1;
+%value = Mul(mx,my,ex,ey,e,m);
+%fprintf("result = %g\n",value);
