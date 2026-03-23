@@ -1,0 +1,27 @@
+function result = L_Mul(mx, my, ex, ey, e, m)
+
+    mx_eff = mx / (2^m);
+    my_eff = my / (2^m);
+    
+    bias = 2^(e-1) - 1;
+
+    Ex_eff = ex - bias;
+    Ey_eff = ey - bias;
+    
+    if m <= 3
+        lm = m;
+    elseif m == 4
+        lm = 3;
+    else
+        lm = 4;
+    end
+
+    result = (1 + mx_eff + my_eff + 2^(-lm)) * 2^(Ex_eff + Ey_eff);
+    %result = (1 + mx_eff + my_eff + 2^(-lm)) * 2^( (ex+ey) - bias);
+    %fprintf(" L_MUL result = %g\n",result);
+end
+
+
+%e=4; m=3; mx=7; my= 1; ex=1; ey=1;
+%value = L_Mul(mx,my,ex,ey,e,m);
+%fprintf(" L_MUL result = %g\n",value);
