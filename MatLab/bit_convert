@@ -1,0 +1,20 @@
+function [value_e,value_m]=bit_convt(e,m,num)
+binStr = dec2bin(num, 7);   
+
+
+eb = binStr(1:e);           
+value_e = bin2dec(eb);
+
+mb=binStr(end-m+1:end);  
+value_m=bin2dec(mb);
+
+%fprintf("exponent bits = %s  and dec = %g\n", eb, value_e);
+%fprintf("mentesa bits = %s  and dec = %g\n", mb, value_m);
+
+end
+
+%num = 10;
+%e = 4;
+%m=3;
+%[ex,mx]=bit_convt(e,m,num);
+%fprintf(" exponent = %g    mentesa = %g\n",ex,mx);
