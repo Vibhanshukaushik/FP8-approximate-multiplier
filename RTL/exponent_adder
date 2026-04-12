@@ -25,7 +25,7 @@ CARRY4 carry_inst1 (.CI(cin),.CYINIT(1'b0),.DI(lut_carry),.S(lut_sum),.CO(co),.O
 genvar j;
 generate
     for(j=0;j<e;j=j+1) begin
-        LUT_B lb(.a(sum_r[j]),.b(bias[j]),.cin(cin),.sum(lut_sum1[j]),.carry(lut_carry1[j])); //cin=1'b1;
+        LUT_B lb(.a(sum_r[j]),.b(bias[j]),.cin(~cin),.sum(lut_sum1[j]),.carry(lut_carry1[j])); //cin=1'b1;
     end
 endgenerate
 LUT_B lb(.a(co[e-1]),.b(bias[e]),.cin(~cin),.sum(lut_sum1[e]),.carry(lut_carry1[e]));
