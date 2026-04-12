@@ -1,0 +1,38 @@
+module fp8_tb;
+parameter e=4,m=3;
+
+reg [7:0] a,b;
+reg cin;
+wire [7:0] total_sum;
+wire ov;
+
+top dut(a,b,cin,total_sum,ov);
+
+initial begin
+cin=0;
+a=0;
+b=0;
+#10;
+
+a=8'd1;
+b=8'd2;
+#10
+a=8'd5;
+b=8'd20;
+#10
+a=8'd10;
+b=8'd30;
+#10
+a=8'd3;
+b=8'd2;
+#10
+a=8'd1;
+b=8'd16;
+#100
+$finish;
+
+end
+
+
+
+endmodule
